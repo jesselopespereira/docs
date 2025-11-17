@@ -1,6 +1,6 @@
 ---
 title: 'POST /api/kriging'
-description: 'Gera mapa de calor usando interpolação por Kriging'
+description: 'Generates a heat map using Kriging interpolation.'
 ---
 
 ## Endpoint
@@ -9,40 +9,38 @@ description: 'Gera mapa de calor usando interpolação por Kriging'
 POST /api/kriging
 ```
 
-Gera uma imagem PNG de mapa de calor através da interpolação espacial por Kriging com base em pontos geográficos fornecidos.
+Generates a heat map PNG image through spatial interpolation using Kriging based on provided geographic points.
 
-## Corpo da Requisição
+## Request body
 
 <ParamField body="points" type="array" required>
-  Array de pontos com coordenadas geográficas e valores. **Mínimo de 3 pontos**.
+  Array of points with geographic coordinates and values. **Minimum of 3 points**.
   
-  <Expandable title="Estrutura do objeto Point">
+  <Expandable title="Point object structure">
     ```typescript
     {
       x: number;      // Longitude
       y: number;      // Latitude
-      value: number;  // Valor a ser interpolado
+      value: number;  // Value to be interpolated
     }
     ```
   </Expandable>
 </ParamField>
 
 <ParamField body="colors" type="string[]">
-  Array de cores em formato hexadecimal para criar o gradiente do mapa. Se omitido, usa uma paleta padrão de 64 cores de verde (#2DCC70) para vermelho (#E74B3C).
-  
-  ```json
-  ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"]
-  ```
+	A hexadecimal color array is used to create the map gradient. If omitted, it
+	uses a standard 64-color palette from green (#2DCC70) to red (#E74B3C).
+	```json ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"] ```
 </ParamField>
 
 <ParamField body="width" type="number" default="400">
-  Largura da imagem em pixels. A imagem sempre será quadrada (width x width).
+	Image width in pixels. The image will always be square (width x width).
 </ParamField>
 
 <ParamField body="polygon" type="object">
-  Polígono GeoJSON que delimita a área de interpolação. Deve seguir a especificação GeoJSON Polygon.
+  GeoJSON polygon that delimits the interpolation area. Must follow the GeoJSON Polygon specification.
   
-  <Expandable title="Estrutura do Polygon">
+  <Expandable title="Polygon structure">
     ```json
     {
       "type": "Polygon",
@@ -50,25 +48,22 @@ Gera uma imagem PNG de mapa de calor através da interpolação espacial por Kri
         [longitude, latitude],
         [longitude, latitude],
         [longitude, latitude],
-        [longitude, latitude]  // Primeiro e último ponto devem ser iguais
+        [longitude, latitude]  // The first and last dots must be the same.
       ]],
-      "bbox": [minLng, minLat, maxLng, maxLat]  // Opcional
+      "bbox": [minLng, minLat, maxLng, maxLat]  // Optional
     }
     ```
   </Expandable>
 </ParamField>
 
-## Resposta
+## Response
 
 <ResponseField name="imageUrl" type="string">
-  URL completa para acessar a imagem PNG gerada. A imagem fica armazenada no servidor.
-  
-  ```
-  http://localhost:3000/public/kriging_a1b2c3d4e5f6.png
-  ```
+	Full URL to access the generated PNG image. The image is stored on the server.
+	``` http://localhost:3000/public/kriging_a1b2c3d4e5f6.png ```
 </ResponseField>
 
-## Exemplos
+## Examples
 
 <CodeGroup>
 
@@ -88,20 +83,20 @@ curl -X POST http://localhost:3000/api/kriging \
 
 ```javascript JavaScript/Node.js
 const response = await fetch('http://localhost:3000/api/kriging', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    points: [
-      { x: -46.6333, y: -23.5505, value: 25.5 },
-      { x: -46.6400, y: -23.5600, value: 28.3 },
-      { x: -46.6250, y: -23.5450, value: 22.1 },
-      { x: -46.6380, y: -23.5480, value: 26.8 }
-    ],
-    colors: ['#0000FF', '#00FFFF', '#00FF00', '#FFFF00', '#FF0000'],
-    width: 800
-  })
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/json'
+	},
+	body: JSON.stringify({
+		points: [
+			{ x: -46.6333, y: -23.5505, value: 25.5 },
+			{ x: -46.64, y: -23.56, value: 28.3 },
+			{ x: -46.625, y: -23.545, value: 22.1 },
+			{ x: -46.638, y: -23.548, value: 26.8 }
+		],
+		colors: ['#0000FF', '#00FFFF', '#00FF00', '#FFFF00', '#FF0000'],
+		width: 800
+	})
 });
 
 const data = await response.json();
@@ -158,105 +153,108 @@ echo $response->imageUrl;
 
 </CodeGroup>
 
-## Exemplo com Polígono
+## Example with Polygon
 
 ```json
 {
-  "points": [
-    { "x": -46.6333, "y": -23.5505, "value": 25.5 },
-    { "x": -46.6400, "y": -23.5600, "value": 28.3 },
-    { "x": -46.6250, "y": -23.5450, "value": 22.1 },
-    { "x": -46.6380, "y": -23.5480, "value": 26.8 },
-    { "x": -46.6300, "y": -23.5550, "value": 24.2 }
-  ],
-  "polygon": {
-    "type": "Polygon",
-    "coordinates": [[
-      [-46.650, -23.560],
-      [-46.650, -23.540],
-      [-46.620, -23.540],
-      [-46.620, -23.560],
-      [-46.650, -23.560]
-    ]],
-    "bbox": [-46.650, -23.560, -46.620, -23.540]
-  },
-  "colors": ["#2DCC70", "#33D130", "#E28D39", "#E74B3C"],
-  "width": 1000
+	"points": [
+		{ "x": -46.6333, "y": -23.5505, "value": 25.5 },
+		{ "x": -46.64, "y": -23.56, "value": 28.3 },
+		{ "x": -46.625, "y": -23.545, "value": 22.1 },
+		{ "x": -46.638, "y": -23.548, "value": 26.8 },
+		{ "x": -46.63, "y": -23.555, "value": 24.2 }
+	],
+	"polygon": {
+		"type": "Polygon",
+		"coordinates": [
+			[
+				[-46.65, -23.56],
+				[-46.65, -23.54],
+				[-46.62, -23.54],
+				[-46.62, -23.56],
+				[-46.65, -23.56]
+			]
+		],
+		"bbox": [-46.65, -23.56, -46.62, -23.54]
+	},
+	"colors": ["#2DCC70", "#33D130", "#E28D39", "#E74B3C"],
+	"width": 1000
 }
 ```
 
-## Códigos de Status
+## Status Codes
 
 <ResponseField name="200" type="Success">
-  Mapa gerado com sucesso. Retorna objeto com `imageUrl`.
+	Map successfully generated. Returns object with `imageUrl`.
 </ResponseField>
 
 <ResponseField name="400" type="Bad Request">
-  Requisição inválida. Possíveis causas:
-  - Menos de 3 pontos fornecidos
-  - Polígono GeoJSON inválido
-  - Estrutura de dados incorreta
+	Invalid request. Possible causes: - Fewer than 3 points provided - Invalid
+	GeoJSON polygon - Incorrect data structure
 </ResponseField>
 
 <ResponseField name="500" type="Internal Server Error">
-  Erro interno no processamento. Geralmente relacionado a falhas na interpolação ou geração da imagem.
+	Internal error in processing. Usually related to failures in interpolation or
+	image generation.
 </ResponseField>
 
-## Parâmetros Técnicos
+## Technical Parameters
 
-A API usa os seguintes parâmetros fixos para o algoritmo de Kriging:
+The API uses the following fixed parameters for the Kriging algorithm:
 
-| Parâmetro | Valor | Descrição |
-|-----------|-------|-----------|
-| Modelo de Variograma | `exponential` | Modelo matemático usado para calcular correlação espacial |
-| Sigma² | `0` | Variância do erro de medição |
-| Alpha | `5` | Parâmetro de alcance do variograma |
-| Grid Step | `0.0001` | Resolução da grade de interpolação |
+| Parameter       | Value         | Description                                              |
+| --------------- | ------------- | -------------------------------------------------------- |
+| Variogram Model | `exponential` | Mathematical model used to calculate spatial correlation |
+| Sigma²          | `0`           | Variance of measurement error                            |
+| Alpha           | `5`           | Variogram range parameter                                |
+| Grid Step       | `0.0001`      | Interpolation grid resolution                            |
 
-## Cache e Performance
+## Cache and Performance
 
-- A API gera um hash MD5 único para cada combinação de parâmetros
-- Requisições idênticas retornam a imagem em cache instantaneamente
-- Imagens são salvas em `/public` com nomenclatura `kriging_{hash}.png`
-- O hash considera: pontos ordenados, cores, largura, polígono e parâmetros do variograma
+- The API generates a unique MD5 hash for each parameter combination
+- Identical requests return the cached image instantly
+- Images are saved in `/public` with the name `kriging_{hash}.png`
+- The hash considers: ordered points, colors, width, polygon, and variogram parameters.
 
 <Tip>
-  Para melhor performance, mantenha `width` em valores razoáveis (400-1000px). Valores muito altos podem aumentar significativamente o tempo de processamento.
+	For better performance, keep `width` at reasonable values ​​(400-1000px). Very
+	high values ​​can significantly increase processing time.
 </Tip>
 
-## Limitações
+## Limitations
 
 <Warning>
-  - Mínimo de **3 pontos** requeridos para interpolação
-  - O polígono deve ser um GeoJSON Polygon válido
-  - O primeiro e último ponto do polígono devem ser idênticos
-  - O limite de payload é de **50MB**
+	- Minimum of **3 points** required for interpolation - The polygon must be a
+	valid GeoJSON Polygon - The first and last points of the polygon must be
+	identical - The payload limit is **50MB**
 </Warning>
 
-## Casos de Uso
+## Use Cases
 
-### Análise de Temperatura
+### Temperature Analysis
+
 ```json
 {
-  "points": [
-    { "x": -46.6333, "y": -23.5505, "value": 28.5 },
-    { "x": -46.6400, "y": -23.5600, "value": 31.2 },
-    { "x": -46.6250, "y": -23.5450, "value": 26.8 }
-  ],
-  "colors": ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"],
-  "width": 800
+	"points": [
+		{ "x": -46.6333, "y": -23.5505, "value": 28.5 },
+		{ "x": -46.64, "y": -23.56, "value": 31.2 },
+		{ "x": -46.625, "y": -23.545, "value": 26.8 }
+	],
+	"colors": ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"],
+	"width": 800
 }
 ```
 
-### Qualidade do Ar
+### Air Quality
+
 ```json
 {
-  "points": [
-    { "x": -46.6333, "y": -23.5505, "value": 45 },
-    { "x": -46.6400, "y": -23.5600, "value": 78 },
-    { "x": -46.6250, "y": -23.5450, "value": 32 }
-  ],
-  "colors": ["#00FF00", "#FFFF00", "#FFA500", "#FF0000", "#8B0000"],
-  "width": 600
+	"points": [
+		{ "x": -46.6333, "y": -23.5505, "value": 45 },
+		{ "x": -46.64, "y": -23.56, "value": 78 },
+		{ "x": -46.625, "y": -23.545, "value": 32 }
+	],
+	"colors": ["#00FF00", "#FFFF00", "#FFA500", "#FF0000", "#8B0000"],
+	"width": 600
 }
 ```
