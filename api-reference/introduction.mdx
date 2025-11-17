@@ -1,18 +1,18 @@
 ---
-title: 'Referência da API'
-description: 'Documentação completa dos endpoints da Kriging API'
+title: 'API Reference'
+description: 'Complete documentation of Krigg endpoints'
 ---
 
-## Visão Geral
+## Overview
 
-A Kriging API fornece um único endpoint para geração de mapas de calor usando interpolação por Kriging. A API é construída com Express.js e retorna imagens PNG hospedadas localmente.
+Krigg provides a single endpoint for generating heatmaps using Kriging interpolation. The API is built with Express.js and returns locally hosted PNG images.
 
 <Card
   title="POST /api/kriging"
   icon="chart-network"
   href="/api-reference/endpoint/kriging"
 >
-  Gerar mapa de calor por interpolação
+  Generate heat map by interpolation.
 </Card>
 
 ## Base URL
@@ -22,14 +22,14 @@ http://localhost:3000
 ```
 
 <Note>
-  A API está atualmente configurada para rodar localmente. Configure a variável de ambiente `PORT` para alterar a porta padrão.
+  The API is currently configured to run locally. Configure the `PORT` environment variable to change the default port.
 </Note>
 
-## Formato das Requisições
+## Request Format
 
-Todas as requisições devem ser enviadas via POST com `Content-Type: application/json`.
+All requests must be sent via POST with `Content-Type: application/json`.
 
-### Estrutura Básica
+### Basic Structure
 
 ```json
 {
@@ -45,9 +45,9 @@ Todas as requisições devem ser enviadas via POST com `Content-Type: applicatio
 }
 ```
 
-## Formato das Respostas
+## Response Format
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
 ```json
 {
@@ -55,44 +55,44 @@ Todas as requisições devem ser enviadas via POST com `Content-Type: applicatio
 }
 ```
 
-### Erro (400 Bad Request)
+### Error (400 Bad Request)
 
 ```json
 {
-  "error": "É preciso ao menos 3 pontos"
+  "error": "You need at least 3 points."
 }
 ```
 
-### Erro (500 Internal Server Error)
+### Error (500 Internal Server Error)
 
 ```json
 {
-  "error": "Erro ao gerar krigagem"
+  "error": "Error generating kriging"
 }
 ```
 
-## Sistema de Cache
+## Cache System
 
-A API implementa cache inteligente baseado em hash MD5 dos parâmetros da requisição:
-- Requisições idênticas retornam a mesma imagem sem reprocessamento
-- O hash inclui: pontos, cores, largura, polígono e parâmetros do variograma
-- As imagens são armazenadas em `/public`
+The API implements intelligent caching based on MD5 hashing of request parameters:
+- Identical requests return the same image without reprocessing
+- The hash includes: points, colors, width, polygon, and variogram parameters.
+- The images are stored in `/public`
 
-## Próximos Passos
+## Next Steps
 
 <CardGroup cols={2}>
   <Card
-    title="Endpoint Completo"
+    title="Complete Endpoint"
     icon="code"
     href="/api-reference/endpoint/kriging"
   >
-    Veja todos os detalhes e exemplos
+    See all the details and examples
   </Card>
   <Card
     title="Quickstart"
     icon="rocket"
     href="/quickstart"
   >
-    Faça sua primeira requisição
+    Place your first order.
   </Card>
 </CardGroup>
