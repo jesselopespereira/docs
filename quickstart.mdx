@@ -55,8 +55,7 @@ const response = await fetch('http://localhost:3000/api/kriging', {
       { x: -46.6400, y: -23.5600, value: 50 },
       { x: -46.6250, y: -23.5450, value: 30 }
     ],
-    colors: ['#0000FF', '#00FF00', '#FFFF00', '#FF0000'],
-    width: 800
+    colors: ['#0000FF', '#00FF00', '#FFFF00', '#FF0000']
   })
 });
 
@@ -85,8 +84,7 @@ payload = {
             [-46.620, -23.560],
             [-46.650, -23.560]
         ]]
-    },
-    "width": 600
+    }
 }
 
 response = requests.post('http://localhost:3000/api/kriging', json=payload)
@@ -114,10 +112,6 @@ print(result['imageUrl'])
 
 <ParamField path="colors" type="array">
   A hexadecimal color array for the gradient. If omitted, it uses the default green-to-red color palette.
-</ParamField>
-
-<ParamField path="width" type="number" default="400">
-  Image width in pixels. The image will always be square.
 </ParamField>
 
 <ParamField path="polygon" type="object">

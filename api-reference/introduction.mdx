@@ -37,7 +37,6 @@ All requests must be sent via POST with `Content-Type: application/json`.
     { "x": -46.6333, "y": -23.5505, "value": 25.5 }
   ],
   "colors": ["#2DCC70", "#E74B3C"],
-  "width": 400,
   "polygon": {
     "type": "Polygon",
     "coordinates": [[...]]
@@ -75,7 +74,7 @@ All requests must be sent via POST with `Content-Type: application/json`.
 
 The API implements intelligent caching based on MD5 hashing of request parameters:
 - Identical requests return the same image without reprocessing
-- The hash includes: points, colors, width, polygon, and variogram parameters.
+- The hash includes: points, colors, polygon, and variogram parameters.
 - The images are stored in `/public`
 
 ## Next Steps

@@ -33,10 +33,6 @@ Generates a heat map PNG image through spatial interpolation using Kriging based
 	```json ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"] ```
 </ParamField>
 
-<ParamField body="width" type="number" default="400">
-	Image width in pixels. The image will always be square (width x width).
-</ParamField>
-
 <ParamField body="polygon" type="object">
   GeoJSON polygon that delimits the interpolation area. Must follow the GeoJSON Polygon specification.
   
@@ -76,8 +72,7 @@ curl -X POST http://localhost:3000/api/kriging \
       { "x": -46.6400, "y": -23.5600, "value": 28.3 },
       { "x": -46.6250, "y": -23.5450, "value": 22.1 },
       { "x": -46.6380, "y": -23.5480, "value": 26.8 }
-    ],
-    "width": 600
+    ]
   }'
 ```
 
@@ -94,8 +89,7 @@ const response = await fetch('http://localhost:3000/api/kriging', {
 			{ x: -46.625, y: -23.545, value: 22.1 },
 			{ x: -46.638, y: -23.548, value: 26.8 }
 		],
-		colors: ['#0000FF', '#00FFFF', '#00FF00', '#FFFF00', '#FF0000'],
-		width: 800
+		colors: ['#0000FF', '#00FFFF', '#00FF00', '#FFFF00', '#FF0000']
 	})
 });
 
@@ -113,8 +107,7 @@ payload = {
         {"x": -46.6400, "y": -23.5600, "value": 28.3},
         {"x": -46.6250, "y": -23.5450, "value": 22.1},
         {"x": -46.6380, "y": -23.5480, "value": 26.8}
-    ],
-    "width": 600
+    ]
 }
 
 response = requests.post(url, json=payload)
@@ -131,8 +124,7 @@ $data = [
         ['x' => -46.6400, 'y' => -23.5600, 'value' => 28.3],
         ['x' => -46.6250, 'y' => -23.5450, 'value' => 22.1],
         ['x' => -46.6380, 'y' => -23.5480, 'value' => 26.8]
-    ],
-    'width' => 600
+    ]
 ];
 
 $options = [
@@ -177,8 +169,7 @@ echo $response->imageUrl;
 		],
 		"bbox": [-46.65, -23.56, -46.62, -23.54]
 	},
-	"colors": ["#2DCC70", "#33D130", "#E28D39", "#E74B3C"],
-	"width": 1000
+	"colors": ["#2DCC70", "#33D130", "#E28D39", "#E74B3C"]
 }
 ```
 
@@ -214,12 +205,7 @@ The API uses the following fixed parameters for the Kriging algorithm:
 - The API generates a unique MD5 hash for each parameter combination
 - Identical requests return the cached image instantly
 - Images are saved in `/public` with the name `kriging_{hash}.png`
-- The hash considers: ordered points, colors, width, polygon, and variogram parameters.
-
-<Tip>
-	For better performance, keep `width` at reasonable values ​​(400-1000px). Very
-	high values ​​can significantly increase processing time.
-</Tip>
+- The hash considers: ordered points, colors, polygon, and variogram parameters.
 
 ## Limitations
 
@@ -240,8 +226,7 @@ The API uses the following fixed parameters for the Kriging algorithm:
 		{ "x": -46.64, "y": -23.56, "value": 31.2 },
 		{ "x": -46.625, "y": -23.545, "value": 26.8 }
 	],
-	"colors": ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"],
-	"width": 800
+	"colors": ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"]
 }
 ```
 
@@ -254,7 +239,6 @@ The API uses the following fixed parameters for the Kriging algorithm:
 		{ "x": -46.64, "y": -23.56, "value": 78 },
 		{ "x": -46.625, "y": -23.545, "value": 32 }
 	],
-	"colors": ["#00FF00", "#FFFF00", "#FFA500", "#FF0000", "#8B0000"],
-	"width": 600
+	"colors": ["#00FF00", "#FFFF00", "#FFA500", "#FF0000", "#8B0000"]
 }
 ```
