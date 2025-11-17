@@ -1,21 +1,21 @@
 ---
-title: "Início Rápido"
-description: "Faça sua primeira requisição à Kriging API em minutos"
+title: "Quick Start"
+description: "Make your first request to the Kriging API in minutes."
 ---
 
-## Visão Geral
+## Overview
 
-A Kriging API possui um único endpoint que recebe pontos geográficos com valores e retorna uma imagem PNG com o mapa de calor interpolado.
+The Kriging API has a single endpoint that receives geographic points with values ​​and returns a PNG image with the interpolated heat map.
 
 <Note>
-  A API está disponível em: `http://localhost:3000/api/kriging`
+  The API is available at: `http://localhost:3000/api/kriging`
 </Note>
 
-## Faça sua primeira requisição
+## Place your first request
 
-### Requisição básica
+### Basic requirement
 
-Aqui está um exemplo mínimo para gerar um mapa de calor:
+Here's a minimal example for generating a heat map:
 
 ```bash
 curl -X POST http://localhost:3000/api/kriging \
@@ -29,7 +29,7 @@ curl -X POST http://localhost:3000/api/kriging \
   }'
 ```
 
-### Resposta
+### Response
 
 ```json
 {
@@ -37,13 +37,13 @@ curl -X POST http://localhost:3000/api/kriging \
 }
 ```
 
-A API retorna uma URL para a imagem PNG gerada que você pode usar diretamente.
+The API returns a URL to the generated PNG image that you can use directly.
 
-## Exemplos Práticos
+## Practical Examples
 
-### Com cores customizadas
+### With custom colors
 
-Defina um gradiente de cores personalizado para seu mapa:
+Define a custom color gradient for your map:
 
 ```javascript
 const response = await fetch('http://localhost:3000/api/kriging', {
@@ -63,9 +63,9 @@ const response = await fetch('http://localhost:3000/api/kriging', {
 const { imageUrl } = await response.json();
 ```
 
-### Com delimitação por polígono
+### With polygon delimitation
 
-Use um polígono GeoJSON para delimitar a área de interpolação:
+Use a GeoJSON polygon to delineate the interpolation area.:
 
 ```python
 import requests
@@ -94,43 +94,43 @@ result = response.json()
 print(result['imageUrl'])
 ```
 
-## Parâmetros
+## Parameters
 
 <ParamField path="points" type="array" required>
-  Array de pontos com coordenadas e valores. Mínimo de 3 pontos necessários.
+  Array of points with coordinates and values. Minimum of 3 points required.
   
-  <Expandable title="Estrutura do ponto">
+  <Expandable title="Point structure">
     <ResponseField name="x" type="number" required>
-      Longitude do ponto
+      Longitude of the point
     </ResponseField>
     <ResponseField name="y" type="number" required>
-      Latitude do ponto
+      Latitude of the point
     </ResponseField>
     <ResponseField name="value" type="number" required>
-      Valor a ser interpolado neste ponto
+      Value to be interpolated at this point
     </ResponseField>
   </Expandable>
 </ParamField>
 
 <ParamField path="colors" type="array">
-  Array de cores em formato hexadecimal para o gradiente. Se omitido, usa paleta padrão de verde para vermelho.
+  A hexadecimal color array for the gradient. If omitted, it uses the default green-to-red color palette.
 </ParamField>
 
 <ParamField path="width" type="number" default="400">
-  Largura da imagem em pixels. A imagem sempre será quadrada.
+  Image width in pixels. The image will always be square.
 </ParamField>
 
 <ParamField path="polygon" type="object">
-  Polígono GeoJSON para delimitar a área de interpolação. Deve ser um Polygon válido com coordinates.
+  GeoJSON polygon to delimit the interpolation area. It must be a valid polygon with coordinates.
 </ParamField>
 
-## Próximos Passos
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Referência Completa" icon="book" href="/api-reference/introduction">
-    Explore todos os detalhes da API
+  <Card title="Full Reference" icon="book" href="/api-reference/introduction">
+    Explore all the details of the API.
   </Card>
-  <Card title="Exemplos Avançados" icon="code" href="/api-reference/endpoint/kriging">
-    Veja mais casos de uso e exemplos
+  <Card title="Advanced Examples" icon="code" href="/api-reference/endpoint/kriging">
+    See more use cases and examples.
   </Card>
 </CardGroup>
