@@ -1,33 +1,98 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'Referência da API'
+description: 'Documentação completa dos endpoints da Kriging API'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Visão Geral
 
-## Welcome
-
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+A Kriging API fornece um único endpoint para geração de mapas de calor usando interpolação por Kriging. A API é construída com Express.js e retorna imagens PNG hospedadas localmente.
 
 <Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
+  title="POST /api/kriging"
+  icon="chart-network"
+  href="/api-reference/endpoint/kriging"
 >
-  View the OpenAPI specification file
+  Gerar mapa de calor por interpolação
 </Card>
 
-## Authentication
+## Base URL
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+```
+http://localhost:3000
+```
+
+<Note>
+  A API está atualmente configurada para rodar localmente. Configure a variável de ambiente `PORT` para alterar a porta padrão.
+</Note>
+
+## Formato das Requisições
+
+Todas as requisições devem ser enviadas via POST com `Content-Type: application/json`.
+
+### Estrutura Básica
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
+{
+  "points": [
+    { "x": -46.6333, "y": -23.5505, "value": 25.5 }
+  ],
+  "colors": ["#2DCC70", "#E74B3C"],
+  "width": 400,
+  "polygon": {
+    "type": "Polygon",
+    "coordinates": [[...]]
   }
-]
+}
 ```
+
+## Formato das Respostas
+
+### Sucesso (200 OK)
+
+```json
+{
+  "imageUrl": "http://localhost:3000/public/kriging_abc123def456.png"
+}
+```
+
+### Erro (400 Bad Request)
+
+```json
+{
+  "error": "É preciso ao menos 3 pontos"
+}
+```
+
+### Erro (500 Internal Server Error)
+
+```json
+{
+  "error": "Erro ao gerar krigagem"
+}
+```
+
+## Sistema de Cache
+
+A API implementa cache inteligente baseado em hash MD5 dos parâmetros da requisição:
+- Requisições idênticas retornam a mesma imagem sem reprocessamento
+- O hash inclui: pontos, cores, largura, polígono e parâmetros do variograma
+- As imagens são armazenadas em `/public`
+
+## Próximos Passos
+
+<CardGroup cols={2}>
+  <Card
+    title="Endpoint Completo"
+    icon="code"
+    href="/api-reference/endpoint/kriging"
+  >
+    Veja todos os detalhes e exemplos
+  </Card>
+  <Card
+    title="Quickstart"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Faça sua primeira requisição
+  </Card>
+</CardGroup>

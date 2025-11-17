@@ -1,0 +1,262 @@
+---
+title: 'POST /api/kriging'
+description: 'Gera mapa de calor usando interpolação por Kriging'
+---
+
+## Endpoint
+
+```
+POST /api/kriging
+```
+
+Gera uma imagem PNG de mapa de calor através da interpolação espacial por Kriging com base em pontos geográficos fornecidos.
+
+## Corpo da Requisição
+
+<ParamField body="points" type="array" required>
+  Array de pontos com coordenadas geográficas e valores. **Mínimo de 3 pontos**.
+  
+  <Expandable title="Estrutura do objeto Point">
+    ```typescript
+    {
+      x: number;      // Longitude
+      y: number;      // Latitude
+      value: number;  // Valor a ser interpolado
+    }
+    ```
+  </Expandable>
+</ParamField>
+
+<ParamField body="colors" type="string[]">
+  Array de cores em formato hexadecimal para criar o gradiente do mapa. Se omitido, usa uma paleta padrão de 64 cores de verde (#2DCC70) para vermelho (#E74B3C).
+  
+  ```json
+  ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"]
+  ```
+</ParamField>
+
+<ParamField body="width" type="number" default="400">
+  Largura da imagem em pixels. A imagem sempre será quadrada (width x width).
+</ParamField>
+
+<ParamField body="polygon" type="object">
+  Polígono GeoJSON que delimita a área de interpolação. Deve seguir a especificação GeoJSON Polygon.
+  
+  <Expandable title="Estrutura do Polygon">
+    ```json
+    {
+      "type": "Polygon",
+      "coordinates": [[
+        [longitude, latitude],
+        [longitude, latitude],
+        [longitude, latitude],
+        [longitude, latitude]  // Primeiro e último ponto devem ser iguais
+      ]],
+      "bbox": [minLng, minLat, maxLng, maxLat]  // Opcional
+    }
+    ```
+  </Expandable>
+</ParamField>
+
+## Resposta
+
+<ResponseField name="imageUrl" type="string">
+  URL completa para acessar a imagem PNG gerada. A imagem fica armazenada no servidor.
+  
+  ```
+  http://localhost:3000/public/kriging_a1b2c3d4e5f6.png
+  ```
+</ResponseField>
+
+## Exemplos
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:3000/api/kriging \
+  -H "Content-Type: application/json" \
+  -d '{
+    "points": [
+      { "x": -46.6333, "y": -23.5505, "value": 25.5 },
+      { "x": -46.6400, "y": -23.5600, "value": 28.3 },
+      { "x": -46.6250, "y": -23.5450, "value": 22.1 },
+      { "x": -46.6380, "y": -23.5480, "value": 26.8 }
+    ],
+    "width": 600
+  }'
+```
+
+```javascript JavaScript/Node.js
+const response = await fetch('http://localhost:3000/api/kriging', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    points: [
+      { x: -46.6333, y: -23.5505, value: 25.5 },
+      { x: -46.6400, y: -23.5600, value: 28.3 },
+      { x: -46.6250, y: -23.5450, value: 22.1 },
+      { x: -46.6380, y: -23.5480, value: 26.8 }
+    ],
+    colors: ['#0000FF', '#00FFFF', '#00FF00', '#FFFF00', '#FF0000'],
+    width: 800
+  })
+});
+
+const data = await response.json();
+console.log(data.imageUrl);
+```
+
+```python Python
+import requests
+
+url = 'http://localhost:3000/api/kriging'
+payload = {
+    "points": [
+        {"x": -46.6333, "y": -23.5505, "value": 25.5},
+        {"x": -46.6400, "y": -23.5600, "value": 28.3},
+        {"x": -46.6250, "y": -23.5450, "value": 22.1},
+        {"x": -46.6380, "y": -23.5480, "value": 26.8}
+    ],
+    "width": 600
+}
+
+response = requests.post(url, json=payload)
+result = response.json()
+print(result['imageUrl'])
+```
+
+```php PHP
+<?php
+$url = 'http://localhost:3000/api/kriging';
+$data = [
+    'points' => [
+        ['x' => -46.6333, 'y' => -23.5505, 'value' => 25.5],
+        ['x' => -46.6400, 'y' => -23.5600, 'value' => 28.3],
+        ['x' => -46.6250, 'y' => -23.5450, 'value' => 22.1],
+        ['x' => -46.6380, 'y' => -23.5480, 'value' => 26.8]
+    ],
+    'width' => 600
+];
+
+$options = [
+    'http' => [
+        'header'  => "Content-type: application/json\r\n",
+        'method'  => 'POST',
+        'content' => json_encode($data)
+    ]
+];
+
+$context  = stream_context_create($options);
+$result = file_get_contents($url, false, $context);
+$response = json_decode($result);
+
+echo $response->imageUrl;
+?>
+```
+
+</CodeGroup>
+
+## Exemplo com Polígono
+
+```json
+{
+  "points": [
+    { "x": -46.6333, "y": -23.5505, "value": 25.5 },
+    { "x": -46.6400, "y": -23.5600, "value": 28.3 },
+    { "x": -46.6250, "y": -23.5450, "value": 22.1 },
+    { "x": -46.6380, "y": -23.5480, "value": 26.8 },
+    { "x": -46.6300, "y": -23.5550, "value": 24.2 }
+  ],
+  "polygon": {
+    "type": "Polygon",
+    "coordinates": [[
+      [-46.650, -23.560],
+      [-46.650, -23.540],
+      [-46.620, -23.540],
+      [-46.620, -23.560],
+      [-46.650, -23.560]
+    ]],
+    "bbox": [-46.650, -23.560, -46.620, -23.540]
+  },
+  "colors": ["#2DCC70", "#33D130", "#E28D39", "#E74B3C"],
+  "width": 1000
+}
+```
+
+## Códigos de Status
+
+<ResponseField name="200" type="Success">
+  Mapa gerado com sucesso. Retorna objeto com `imageUrl`.
+</ResponseField>
+
+<ResponseField name="400" type="Bad Request">
+  Requisição inválida. Possíveis causas:
+  - Menos de 3 pontos fornecidos
+  - Polígono GeoJSON inválido
+  - Estrutura de dados incorreta
+</ResponseField>
+
+<ResponseField name="500" type="Internal Server Error">
+  Erro interno no processamento. Geralmente relacionado a falhas na interpolação ou geração da imagem.
+</ResponseField>
+
+## Parâmetros Técnicos
+
+A API usa os seguintes parâmetros fixos para o algoritmo de Kriging:
+
+| Parâmetro | Valor | Descrição |
+|-----------|-------|-----------|
+| Modelo de Variograma | `exponential` | Modelo matemático usado para calcular correlação espacial |
+| Sigma² | `0` | Variância do erro de medição |
+| Alpha | `5` | Parâmetro de alcance do variograma |
+| Grid Step | `0.0001` | Resolução da grade de interpolação |
+
+## Cache e Performance
+
+- A API gera um hash MD5 único para cada combinação de parâmetros
+- Requisições idênticas retornam a imagem em cache instantaneamente
+- Imagens são salvas em `/public` com nomenclatura `kriging_{hash}.png`
+- O hash considera: pontos ordenados, cores, largura, polígono e parâmetros do variograma
+
+<Tip>
+  Para melhor performance, mantenha `width` em valores razoáveis (400-1000px). Valores muito altos podem aumentar significativamente o tempo de processamento.
+</Tip>
+
+## Limitações
+
+<Warning>
+  - Mínimo de **3 pontos** requeridos para interpolação
+  - O polígono deve ser um GeoJSON Polygon válido
+  - O primeiro e último ponto do polígono devem ser idênticos
+  - O limite de payload é de **50MB**
+</Warning>
+
+## Casos de Uso
+
+### Análise de Temperatura
+```json
+{
+  "points": [
+    { "x": -46.6333, "y": -23.5505, "value": 28.5 },
+    { "x": -46.6400, "y": -23.5600, "value": 31.2 },
+    { "x": -46.6250, "y": -23.5450, "value": 26.8 }
+  ],
+  "colors": ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"],
+  "width": 800
+}
+```
+
+### Qualidade do Ar
+```json
+{
+  "points": [
+    { "x": -46.6333, "y": -23.5505, "value": 45 },
+    { "x": -46.6400, "y": -23.5600, "value": 78 },
+    { "x": -46.6250, "y": -23.5450, "value": 32 }
+  ],
+  "colors": ["#00FF00", "#FFFF00", "#FFA500", "#FF0000", "#8B0000"],
+  "width": 600
+}
+```
