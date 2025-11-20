@@ -31,7 +31,7 @@ curl -X POST http://localhost:3000/api/kriging \
 
 ```json
 {
-	"url": "http://localhost:3000/public/kriging_abc123def456.png",
+	"url": "http://localhost:3000/public/abc123def456.png",
 	"bbox": {
 		"minLat": -23.56,
 		"maxLat": -23.54,
@@ -119,9 +119,26 @@ result = response.json()
 	green-to-red color palette.
 </ParamField>
 
-<ParamField path="polygon" type="object">
+<ParamField path="polygon" type="object" required>
 	GeoJSON polygon to delimit the interpolation area. It must be a valid polygon
 	with coordinates.
+</ParamField>
+
+<ParamField body="variogramModel" type="string" default="exponential">
+	Mathematical model used to calculate spatial correlation. Options: `gaussian`,
+	`exponential`, `spherical`.
+</ParamField>
+
+<ParamField body="variogramSigma2" type="number" default="0">
+	Variance of measurement error.
+</ParamField>
+
+<ParamField body="variogramAlpha" type="number" default="5">
+	Variogram range parameter.
+</ParamField>
+
+<ParamField body="gridStep" type="number" default="0.0001">
+	Interpolation grid resolution.
 </ParamField>
 
 ## Next Steps

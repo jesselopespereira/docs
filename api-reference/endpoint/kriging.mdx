@@ -72,7 +72,7 @@ Generates a heat map PNG image through spatial interpolation using Kriging based
 
 <ResponseField name="url" type="string">
 	Full URL to access the generated PNG image. The image is stored on the server.
-	``` http://localhost:3000/public/kriging_a1b2c3d4e5f6.png ```
+	``` http://localhost:3000/public/a1b2c3d4e5f6.png ```
 </ResponseField>
 
 <ResponseField name="bbox" type="object">
@@ -238,7 +238,7 @@ The API uses the following default parameters for the Kriging algorithm if not p
 
 - The API generates a unique MD5 hash for each parameter combination
 - Identical requests return the cached image instantly
-- Images are saved in `/public` with the name `kriging_{hash}.png`
+- Images are saved in `/public` with the name `{hash}.png`
 - The hash considers: ordered points, colors, polygon, and variogram parameters.
 
 ## Limitations
