@@ -52,6 +52,23 @@ Generates a heat map PNG image through spatial interpolation using Kriging based
   </Expandable>
 </ParamField>
 
+<ParamField body="variogramModel" type="string" default="exponential">
+	Mathematical model used to calculate spatial correlation. Options: `gaussian`,
+	`exponential`, `spherical`.
+</ParamField>
+
+<ParamField body="variogramSigma2" type="number" default="0">
+	Variance of measurement error.
+</ParamField>
+
+<ParamField body="variogramAlpha" type="number" default="5">
+	Variogram range parameter.
+</ParamField>
+
+<ParamField body="gridStep" type="number" default="0.0001">
+	Interpolation grid resolution.
+</ParamField>
+
 ## Response
 
 <ResponseField name="imageUrl" type="string">
@@ -191,9 +208,9 @@ echo $response->imageUrl;
 
 ## Technical Parameters
 
-The API uses the following fixed parameters for the Kriging algorithm:
+The API uses the following default parameters for the Kriging algorithm if not provided in the request:
 
-| Parameter       | Value         | Description                                              |
+| Parameter       | Default Value | Description                                              |
 | --------------- | ------------- | -------------------------------------------------------- |
 | Variogram Model | `exponential` | Mathematical model used to calculate spatial correlation |
 | Sigma²          | `0`           | Variance of measurement error                            |
