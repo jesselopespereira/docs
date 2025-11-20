@@ -70,9 +70,31 @@ Generates a heat map PNG image through spatial interpolation using Kriging based
 
 ## Response
 
-<ResponseField name="imageUrl" type="string">
+<ResponseField name="url" type="string">
 	Full URL to access the generated PNG image. The image is stored on the server.
 	``` http://localhost:3000/public/kriging_a1b2c3d4e5f6.png ```
+</ResponseField>
+
+<ResponseField name="bbox" type="object">
+	Bounding box of the generated image.
+	<Expandable title="BBox structure">
+		```json
+		{
+			"minLat": -23.56,
+			"maxLat": -23.54,
+			"minLng": -46.65,
+			"maxLng": -46.62
+		}
+		```
+	</Expandable>
+</ResponseField>
+
+<ResponseField name="xlim" type="number[]">
+	Longitude limits [min, max].
+</ResponseField>
+
+<ResponseField name="ylim" type="number[]">
+	Latitude limits [min, max].
 </ResponseField>
 
 ## Examples
@@ -110,7 +132,6 @@ const response = await fetch('http://localhost:3000/api/kriging', {
 });
 
 const data = await response.json();
-console.log(data.imageUrl);
 ```
 
 ```python Python
@@ -128,7 +149,6 @@ payload = {
 
 response = requests.post(url, json=payload)
 result = response.json()
-print(result['imageUrl'])
 ```
 
 ```php PHP
@@ -154,8 +174,6 @@ $options = [
 $context  = stream_context_create($options);
 $result = file_get_contents($url, false, $context);
 $response = json_decode($result);
-
-echo $response->imageUrl;
 ?>
 ```
 
@@ -191,7 +209,8 @@ echo $response->imageUrl;
 ## Status Codes
 
 <ResponseField name="200" type="Success">
-	Map successfully generated. Returns object with `imageUrl`.
+	Map successfully generated. Returns object with `url`, `bbox`, `xlim` and
+	`ylim`.
 </ResponseField>
 
 <ResponseField name="400" type="Bad Request">

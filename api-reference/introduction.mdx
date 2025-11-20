@@ -8,11 +8,11 @@ description: 'Complete documentation of Krigg endpoints'
 Krigg provides a single endpoint for generating heatmaps using Kriging interpolation. The API is built with Express.js and returns locally hosted PNG images.
 
 <Card
-  title="POST /api/kriging"
-  icon="chart-network"
-  href="/api-reference/endpoint/kriging"
+	title="POST /api/kriging"
+	icon="chart-network"
+	href="/api-reference/endpoint/kriging"
 >
-  Generate heat map by interpolation.
+	Generate heat map by interpolation.
 </Card>
 
 ## Base URL
@@ -22,7 +22,8 @@ http://localhost:3000
 ```
 
 <Note>
-  The API is currently configured to run locally. Configure the `PORT` environment variable to change the default port.
+	The API is currently configured to run locally. Configure the `PORT`
+	environment variable to change the default port.
 </Note>
 
 ## Request Format
@@ -50,7 +51,15 @@ All requests must be sent via POST with `Content-Type: application/json`.
 
 ```json
 {
-  "imageUrl": "http://localhost:3000/public/kriging_abc123def456.png"
+	"url": "http://localhost:3000/public/kriging_abc123def456.png",
+	"bbox": {
+		"minLat": -23.56,
+		"maxLat": -23.54,
+		"minLng": -46.65,
+		"maxLng": -46.62
+	},
+	"xlim": [-46.65, -46.62],
+	"ylim": [-23.56, -23.54]
 }
 ```
 
@@ -58,7 +67,7 @@ All requests must be sent via POST with `Content-Type: application/json`.
 
 ```json
 {
-  "error": "You need at least 3 points."
+	"error": "You need at least 3 points."
 }
 ```
 
@@ -66,13 +75,14 @@ All requests must be sent via POST with `Content-Type: application/json`.
 
 ```json
 {
-  "error": "Error generating kriging"
+	"error": "Error generating kriging"
 }
 ```
 
 ## Cache System
 
 The API implements intelligent caching based on MD5 hashing of request parameters:
+
 - Identical requests return the same image without reprocessing
 - The hash includes: points, colors, polygon, and variogram parameters.
 - The images are stored in `/public`
@@ -80,18 +90,14 @@ The API implements intelligent caching based on MD5 hashing of request parameter
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card
-    title="Complete Endpoint"
-    icon="code"
-    href="/api-reference/endpoint/kriging"
-  >
-    See all the details and examples
-  </Card>
-  <Card
-    title="Quickstart"
-    icon="rocket"
-    href="/quickstart"
-  >
-    Place your first order.
-  </Card>
+	<Card
+		title="Complete Endpoint"
+		icon="code"
+		href="/api-reference/endpoint/kriging"
+	>
+		See all the details and examples
+	</Card>
+	<Card title="Quickstart" icon="rocket" href="/quickstart">
+		Place your first order.
+	</Card>
 </CardGroup>
