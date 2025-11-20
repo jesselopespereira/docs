@@ -33,7 +33,7 @@ Generates a heat map PNG image through spatial interpolation using Kriging based
 	```json ["#0000FF", "#00FF00", "#FFFF00", "#FF0000"] ```
 </ParamField>
 
-<ParamField body="polygon" type="object">
+<ParamField body="polygon" type="object" required>
   GeoJSON polygon that delimits the interpolation area. Must follow the GeoJSON Polygon specification.
   
   <Expandable title="Polygon structure">
@@ -45,8 +45,7 @@ Generates a heat map PNG image through spatial interpolation using Kriging based
         [longitude, latitude],
         [longitude, latitude],
         [longitude, latitude]  // The first and last dots must be the same.
-      ]],
-      "bbox": [minLng, minLat, maxLng, maxLat]  // Optional
+      ]]
     }
     ```
   </Expandable>
@@ -183,8 +182,7 @@ echo $response->imageUrl;
 				[-46.62, -23.56],
 				[-46.65, -23.56]
 			]
-		],
-		"bbox": [-46.65, -23.56, -46.62, -23.54]
+		]
 	},
 	"colors": ["#2DCC70", "#33D130", "#E28D39", "#E74B3C"]
 }
